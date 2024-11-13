@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include <stdlib.h>>
-#include <stdbool.h>>
+#include <stdlib.h>
+#include <stdbool.h>
 #define SIZE 100
+
 struct cola{
     int items[SIZE];
     int start;
@@ -16,7 +17,7 @@ struct cola* crearCola(){
 };
 
 int esVacia(struct cola* q){
-    if(q ->end == -1){
+    if(q->end == -1){
         return 1;
     
     }
@@ -69,5 +70,4 @@ void imprimirCola(struct cola* q){
 }
 int BFS(int Grafo[], int nodo_inicial, int tamaño){
     bool visitado[tamaño];
-
 }
