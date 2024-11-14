@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graph.h"
+#include "BFS.h"
 // Compilar usando gcc main.c graph.c -o main
 
 int main(int argc, char const *argv[]){
@@ -29,9 +30,14 @@ int main(int argc, char const *argv[]){
 		}
 	}
 
-	printf("Matriz de adyacencia del grafo ingresado:\n");
+	printf("Matriz de adyacencia del grafo ingresada:\n");
 	printGraph(g);
-
+	if(bfs(g,0)){
+	    printf("El grafo es conexo.\n");
+	}else{
+		printf("El grafo NO es conexo.\n");
+	}
+	freeGraph(g);
 	return 0;
 }
 

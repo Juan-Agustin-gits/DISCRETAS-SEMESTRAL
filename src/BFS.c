@@ -1,73 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#define SIZE 100
+#include "COLA.h"
+#include "graph.h"
 
-struct cola{
-    int items[SIZE];
-    int start;
-    int end;
-}cola;
 
-struct cola* crearCola(){
-    struct cola* q = malloc(sizeof(struct cola));
-    q ->start = -1;
-    q ->end = -1;
-    return q;
-};
+int bfs(struct Graph* graph, int StartVert){
+    struct cola* q = crearCola();
 
-int esVacia(struct cola* q){
-    if(q->end == -1){
-        return 1;
+    int* visitados  = (int*)malloc(graph->n * sizeof(int));
+    for (int i = 0; i< graph->n;i++){
+        visitados[i] = 0;
+    }
     
-    }
-    else{
-        return 0;
-    }
-};
+    visitados[StartVert] = 1;
+    enColar(q, StartVert);
 
-void enColar(struct cola* q, int valor){
-    if (q -> end == SIZE - 1){
-        printf("\n Cola llena");
-    }else{
-        if (q -> start == -1){
-            q -> start = 0;
-        }
-        q -> end++;
-        q -> items[q -> end] = valor;
-    }
+     int contador_visitados = 1;
+    while (!esVacia(q))
+    {
+        int ActVert = desColar(q);
+        printf(" vertice actual: %d ", ActVert);
 
-}
-int desColar(struct cola* q){
-    int item;
-    if(esVacia(q)){
-        printf("cola vacía ");
-        item = - 1;
-    }else{
-        item = q -> items[q -> start];
-        q -> start++;
-        if(q -> start > q -> end){
-            q -> start = q -> end = -1;
-        }
-        
-    }
-    return item;
-}
-void imprimirCola(struct cola* q){
-    int i = q -> start;
 
-    if (esVacia(q)){
-        printf("la cola esta vacía");
-    }else{
-        printf("\n Cola \n");
-        for (i = q -> start; i < q -> end + 1; i++)
+        // analizar vecindad
+        for (int i = 0; i < graph->n; i++)
         {
-            printf("%d", q -> items[i]);
+            if (graph->adjMatrix[ActVert][i] == 1 && !visitados[i]){
+                visitados[i] = 1;
+                enColar(q,i);
+                contador_visitados++;
+
+            }
         }
         
     }
+    int esConexo;
+    if(contador_visitados == graph->n){
+        esConexo = 1;
 
-}
-int BFS(int Grafo[], int nodo_inicial, int tamaño){
-    bool visitado[tamaño];
+    }else{
+        esConexo = 0;
+    }
+    
+    printf("\n");
+    liberarCola(q);
+    free(visitados);
+    return esConexo;
+
 }
