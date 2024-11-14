@@ -67,3 +67,49 @@ void freeGraph(Graph *g) {
     free(g->adjMatrix);
     free(g);
 }
+
+int minDegree(Graph *g) {
+	// recibimos grafo, recorremos su matriz y vemos cual fila es la que menos 1's tiene
+	int **matrix = g->adjMatrix;
+	int orden = g->n;
+	int count = 0;
+	// inicializamos min como el orden del grafo, para comparar mas facilmente
+	int min = orden;
+	for(int i = 0; i<orden; i++) {
+		for(int j = 0; j<orden; j++) {
+			if(matrix[i][j] == 1){
+				count++;
+			}
+		}
+		// en la primera iteracion siempre se encontrará un mínimo
+		if(count < min) {
+			min = count;
+		}
+		count = 0;
+	}
+
+	return min;
+}
+
+int maxDegree(Graph *g) {
+	// recibimos grafo, recorremos su matriz y vemos cual fila es la que menos 1's tiene
+	int **matrix = g->adjMatrix;
+	int orden = g->n;
+	int count = 0;
+	// inicializamos max en 0, para comparar mas facilmente
+	int max = 0;
+	for(int i = 0; i<orden; i++) {
+		for(int j = 0; j<orden; j++) {
+			if(matrix[i][j] == 1){
+				count++;
+			}
+		}
+		// en la primera iteracion siempre se encontrará un mínimo
+		if(count > max) {
+			max = count;
+		}
+		count = 0;
+	}
+
+	return max;
+}
