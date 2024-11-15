@@ -1,33 +1,76 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "graph.h"
 #include "BFS.h"
-// Compilar usando gcc main.c graph.c COLA.C BFS.C -o main
+#include "MENU.h"
+
+// Compilar usando gcc experimentos.c graph.c COLA.c BFS.c MENU.c -o exp
+
 int main(int argc, char const *argv[]){
-	// Primera linea de entrada, orden del grafo.
-	int orden;
-	scanf("%d", &orden);
-	if (orden <= 0){
-		fprintf(stderr, "Error. Orden del grafo no válido.\n");
-		exit(1);
+	clock_t start = clock();
+	if (argc < 2) {
+        printf("Por favor, ejecuta el programa de la siguiente forma: %s <nombre_del_archivo>\n", argv[0]);
+        return 1; // Terminar el programa si no se proporciona un archivo
+    }
+
+	verificarArchivo(argv[1]);
+
+    int orden;
+	Node *nodes = NULL;
+
+    parse_file(argv[1], &orden, &nodes);
+
+    Graph* g = createGraph(orden);
+    printf("Orden: %d\n", orden);
+
+	for (int i = 0; i < orden; i++) {
+	    //printf("Valor %d: ", nodes[i].node);
+	    for (int j = 0; j < nodes[i].neighbor_count; j++) {
+
+	        //INTERACTUAR CON LOS VALORES
+
+	        addEdge(g, i, nodes[i].neighbors[j] -1 );
+	    }
+	    //printf("\n");
 	}
-	Graph* g = createGraph(orden);
-	// Lectura de conexiones del grafo (se asume que se comienza desde el 1 para el usuario):
-	for (int i = 0; i < orden; i++){
-		printf("%d: ", i+1);
-		for (int j = 0; j < orden; j++){
-			int valor;
-			scanf("%d", &valor);
-			if (valor > orden) {
-				fprintf(stderr,"Valor %d es superior al orden del grafo.\n", valor);
-				exit(1);
-			}
-			if (valor == -1){
-				break;
-			}
-			addEdge(g, i, valor-1);
+
+	printf("\n");
+	printf("Matriz de adyacencia del grafo ingresado:\n");
+	printGraph(g);
+    printf("Grado mínimo: %d\n", minDegree(g));
+    printf("Grado máximo: %d\n", maxDegree(g));
+
+
+	printf("\n");
+	int conec = g->n;
+	for(int k = 0;k < g->n; k++){
+		Graph* g2 = copyGraph(g);
+		removeVertex(g2,k);
+		if(!bfs(g2,0)){
+			conec = k+1;
+			printf("El Grafo ingresado tiene conectividad %d\n", conec);
+			printf("Maximo k = %d tal que g es %d-conexo.\n", conec, conec);
+			break;
 		}
+		freeGraph(g2);
 	}
+
+	if (conec == g->n) {
+		printf("\n");
+        printf("El Grafo es %d-Conexo\n", conec);
+    }
+    clock_t end = clock();
+
+    double tiempo_transcurrido = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("%.6f\n", tiempo_transcurrido);
+	return 0;
+}
+
+/* Version antigua de main.c
+	
+	Graph* g = createGraph(orden);
+
 
 	printf("Matriz de adyacencia del grafo ingresado:\n");
 	printGraph(g);
@@ -56,6 +99,4 @@ int main(int argc, char const *argv[]){
         printf("El Grafo es %d-Conexo\n", conec);
     }
 	freeGraph(g);
-	return 0;
-}
-
+*/

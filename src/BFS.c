@@ -41,5 +41,4 @@ int bfs(struct Graph* graph, int StartVert){
     liberarCola(q);
     free(visitados);
     return esConexo;
-
 }

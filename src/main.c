@@ -130,7 +130,7 @@ int main() {
 					} if (seleccionadas [1] != 0){
 						//MATRIZ DE ADYACENCIA
 						printf("\n");
-						printf("Matriz de adyacencia del grafo ingresada:\n");
+						printf("Matriz de adyacencia del grafo ingresado:\n");
 						printGraph(g);
 
 					} if (seleccionadas [2] != 0){
