@@ -113,9 +113,6 @@ int maxDegree(Graph *g) {
 
 	return max;
 }
-#include <stdio.h>
-#include <stdlib.h>
-#include "graph.h"
 
 void removeVertex(Graph* g, int vertex) {
     if (vertex < 0 || vertex >= g->n) {

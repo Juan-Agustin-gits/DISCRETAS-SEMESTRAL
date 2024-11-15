@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "graph.h"
 #include "BFS.h"
-// Compilar usando gcc main.c graph.c -o main
+// Compilar usando gcc main.c graph.c COLA.C BFS.C -o main
 int main(int argc, char const *argv[]){
 	// Primera linea de entrada, orden del grafo.
 	int orden;
@@ -33,18 +33,18 @@ int main(int argc, char const *argv[]){
         freeGraph(g);
         exit(1);
 	}
-	printf("Matriz de adyacencia del grafo ingresada:\n");
+	printf("Matriz de adyacencia del grafo ingresado:\n");
 	printGraph(g);
+
 	int conec = g->n;
 	for(int k = 0;k < g->n; k++){
 		Graph* g2 = copyGraph(g);
 		removeVertex(g2,k);
 		if(!bfs(g2,0)){
 			conec = k+1;
-			printf("El Grafo ingresado tiene %d - Conectividad", conec);
+			printf("El Grafo ingresado tiene %d - Conectividad\n", conec);
 			freeGraph(g2);
 			break;
-
 		}
 		freeGraph(g2);
 	}
