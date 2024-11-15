@@ -32,6 +32,7 @@ int main(int argc, char const *argv[]){
 
 	printf("Matriz de adyacencia del grafo ingresada:\n");
 	printGraph(g);
+	
 	if(bfs(g,0)){
 	    printf("El grafo es conexo.\n");
 	}else{

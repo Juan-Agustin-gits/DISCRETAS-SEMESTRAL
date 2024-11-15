@@ -113,3 +113,31 @@ int maxDegree(Graph *g) {
 
 	return max;
 }
+void removeVertex(Graph* g, int vert){
+	if(vert < 0 || vert >= g->n){
+		fprintf(stderr, "Error: el vértice %d está fuera del rango.\n", vert);
+        return;
+	}
+	// eliminar fila
+	int n = g-> n;
+	for(int i = vert; i < n; i++){
+		for(int j = 0; j < n+1; j++){
+			g->adjMatrix[i][j] = g->adjMatrix[i+1][j];
+		}
+	}
+	// eliminar columna
+	for(int j = vert; j < n-1; j++){
+		for(int i = 0; i < n; i++){
+			g->adjMatrix[i][j] = g->adjMatrix[i][j + 1];
+		}
+	}
+	free(g->adjMatrix[n - 1]);
+
+	g->adjMatrix = (int**)realloc(g->adjMatrix, (n-1)*sizeof(int*));
+	if (g->adjMatrix == NULL && n - 1 > 0) {
+        fprintf(stderr, "Error al redimensionar la matriz de adyacencia.\n");
+        exit(1);
+    }
+	g->n--;
+
+}
