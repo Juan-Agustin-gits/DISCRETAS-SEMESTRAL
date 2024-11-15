@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "graph.h"
 
 Graph* createGraph(int orden) {
@@ -158,4 +159,45 @@ Graph* copyGraph(Graph* g) {
         }
     }
     return newGraph;
+}
+
+// Funciones para verificar si la matriz de adyacencia es correcta:
+
+// Para verificar que un grafo no tenga bucles, la diag. principal deben ser solo ceros.
+bool hasNoLoops(int **matrix, int n) {
+    for (int i = 0; i < n; i++) {
+        if (matrix[i][i] != 0) {
+        	// si hay bucles, retorna falso
+            return false; 
+        }
+    }
+
+    // si no hay bucles, retorna true.
+    return true;  
+}
+
+// Para grafos no dirigidos, la matriz de adyacencia debe ser simétrica.
+bool isSymmetric(int **matrix, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != matrix[j][i]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void verificarAdjMatrix(Graph *g) {
+	if(!hasNoLoops(g->adjMatrix, g->n)){
+		fprintf(stderr,"Error. El grafo ingresado posee bucles (diagonal principal deben ser ceros).\n");
+		exit(1);
+	}
+
+	if(!isSymmetric(g->adjMatrix, g->n)){
+		fprintf(stderr, "Error. La matriz de adyacencia del grafo no es simétrica.\n");
+		exit(1);
+	}
+
+	printf("Grafo ingresado es válido.\n");
 }

@@ -28,13 +28,16 @@ int main(int argc, char const *argv[]){
 			addEdge(g, i, valor-1);
 		}
 	}
+
+	printf("Matriz de adyacencia del grafo ingresado:\n");
+	printGraph(g);
+	verificarAdjMatrix(g);
+	
 	if(!bfs(g,0)){
 		fprintf(stderr, "Por favor ingresa un grafo conexo.\n");
         freeGraph(g);
         exit(1);
 	}
-	printf("Matriz de adyacencia del grafo ingresado:\n");
-	printGraph(g);
 
 	int conec = g->n;
 	for(int k = 0;k < g->n; k++){

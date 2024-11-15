@@ -13,5 +13,6 @@ void printGraph(Graph *g);
 void freeGraph(Graph *g);
 void removeVertex(Graph* g, int vert);
 Graph* copyGraph(Graph* g);
+void verificarAdjMatrix(Graph *g);
 
 #endif
