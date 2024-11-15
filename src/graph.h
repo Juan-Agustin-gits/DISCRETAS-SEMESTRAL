@@ -12,5 +12,6 @@ void delEdge(Graph *g, int src, int dest);
 void printGraph(Graph *g);
 void freeGraph(Graph *g);
 void removeVertex(Graph* g, int vert);
+Graph* copyGraph(Graph* g);
 
 #endif

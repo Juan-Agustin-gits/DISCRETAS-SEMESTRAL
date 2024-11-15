@@ -113,31 +113,52 @@ int maxDegree(Graph *g) {
 
 	return max;
 }
-void removeVertex(Graph* g, int vert){
-	if(vert < 0 || vert >= g->n){
-		fprintf(stderr, "Error: el vértice %d está fuera del rango.\n", vert);
-        return;
-	}
-	// eliminar fila
-	int n = g-> n;
-	for(int i = vert; i < n; i++){
-		for(int j = 0; j < n+1; j++){
-			g->adjMatrix[i][j] = g->adjMatrix[i+1][j];
-		}
-	}
-	// eliminar columna
-	for(int j = vert; j < n-1; j++){
-		for(int i = 0; i < n; i++){
-			g->adjMatrix[i][j] = g->adjMatrix[i][j + 1];
-		}
-	}
-	free(g->adjMatrix[n - 1]);
+#include <stdio.h>
+#include <stdlib.h>
+#include "graph.h"
 
-	g->adjMatrix = (int**)realloc(g->adjMatrix, (n-1)*sizeof(int*));
-	if (g->adjMatrix == NULL && n - 1 > 0) {
+void removeVertex(Graph* g, int vertex) {
+    if (vertex < 0 || vertex >= g->n) {
+        fprintf(stderr, "Error: el vértice %d está fuera del rango.\n", vertex);
+        return;
+    }
+
+    int n = g->n;
+
+    // Eliminar la fila correspondiente al vértice en la matriz de adyacencia
+    for (int i = vertex; i < n - 1; i++) {
+        for (int j = 0; j < n; j++) {
+            g->adjMatrix[i][j] = g->adjMatrix[i + 1][j];
+        }
+    }
+
+    // Eliminar la columna correspondiente al vértice
+    for (int j = vertex; j < n - 1; j++) {
+        for (int i = 0; i < n; i++) {
+            g->adjMatrix[i][j] = g->adjMatrix[i][j + 1];
+        }
+    }
+
+    // Liberar la última fila de la matriz de adyacencia
+    free(g->adjMatrix[n - 1]);
+
+    // Redimensionar la matriz de adyacencia
+    g->adjMatrix = (int**)realloc(g->adjMatrix, (n - 1) * sizeof(int*));
+    if (g->adjMatrix == NULL && n - 1 > 0) {
         fprintf(stderr, "Error al redimensionar la matriz de adyacencia.\n");
         exit(1);
     }
-	g->n--;
 
+    // Actualizar el número de vértices
+    g->n--;
+}
+
+Graph* copyGraph(Graph* g) {
+    Graph* newGraph = createGraph(g->n);
+    for (int i = 0; i < g->n; i++) {
+        for (int j = 0; j < g->n; j++) {
+            newGraph->adjMatrix[i][j] = g->adjMatrix[i][j];
+        }
+    }
+    return newGraph;
 }

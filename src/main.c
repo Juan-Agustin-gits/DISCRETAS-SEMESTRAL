@@ -3,7 +3,6 @@
 #include "graph.h"
 #include "BFS.h"
 // Compilar usando gcc main.c graph.c -o main
-
 int main(int argc, char const *argv[]){
 	// Primera linea de entrada, orden del grafo.
 	int orden;
@@ -29,15 +28,30 @@ int main(int argc, char const *argv[]){
 			addEdge(g, i, valor-1);
 		}
 	}
-
+	if(!bfs(g,0)){
+		fprintf(stderr, "Por favor ingresa un grafo conexo.\n");
+        freeGraph(g);
+        exit(1);
+	}
 	printf("Matriz de adyacencia del grafo ingresada:\n");
 	printGraph(g);
-	
-	if(bfs(g,0)){
-	    printf("El grafo es conexo.\n");
-	}else{
-		printf("El grafo NO es conexo.\n");
+	int conec = g->n;
+	for(int k = 0;k < g->n; k++){
+		Graph* g2 = copyGraph(g);
+		removeVertex(g2,k);
+		if(!bfs(g2,0)){
+			conec = k+1;
+			printf("El Grafo ingresado tiene %d - Conectividad", conec);
+			freeGraph(g2);
+			break;
+
+		}
+		freeGraph(g2);
 	}
+
+	if (conec == g->n) {
+        printf("El Grafo es %d-Conexo\n", conec);
+    }
 	freeGraph(g);
 	return 0;
 }
