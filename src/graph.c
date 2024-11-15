@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "graph.h"
 #include "MENU.h"
 
@@ -161,50 +162,43 @@ Graph* copyGraph(Graph* g) {
     return newGraph;
 }
 
-Graph* cargarGrafoDesdeArchivo(const char* rutaArchivo) {
+// Funciones para verificar si la matriz de adyacencia es correcta:
 
-	FILE* archivo = fopen(rutaArchivo, "r");
-	if (!archivo) {
-	    perror("Error al abrir el archivo");
-	    fprintf(stderr, "Asegúrate de que la ruta del archivo sea correcta: %s\n", rutaArchivo);
-	    return NULL;
+// Para verificar que un grafo no tenga bucles, la diag. principal deben ser solo ceros.
+bool hasNoLoops(int **matrix, int n) {
+    for (int i = 0; i < n; i++) {
+        if (matrix[i][i] != 0) {
+        	// si hay bucles, retorna falso
+            return false; 
+        }
+    }
+
+    // si no hay bucles, retorna true.
+    return true;  
+}
+
+// Para grafos no dirigidos, la matriz de adyacencia debe ser simétrica.
+bool isSymmetric(int **matrix, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != matrix[j][i]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void verificarAdjMatrix(Graph *g) {
+	if(!hasNoLoops(g->adjMatrix, g->n)){
+		fprintf(stderr,"Error. El grafo ingresado posee bucles (diagonal principal deben ser ceros).\n");
+		exit(1);
 	}
 
-    int orden;
-    // Leer el orden del grafo desde el archivo
-    if (fscanf(archivo, "%d", &orden) != 1 || orden <= 0) {
-        fprintf(stderr, "Error. Orden del grafo no válido en el archivo.\n");
-        fclose(archivo);
-        return NULL;
-    }
+	if(!isSymmetric(g->adjMatrix, g->n)){
+		fprintf(stderr, "Error. La matriz de adyacencia del grafo no es simétrica.\n");
+		exit(1);
+	}
 
-    // Crear el grafo con el orden obtenido
-    Graph* g = createGraph(orden);
-
-    // Leer las adyacencias
-    for (int i = 0; i < orden; i++) {
-        int nodo;
-        // Leer el nodo y sus adyacencias
-        if (fscanf(archivo, "%d :", &nodo) != 1 || nodo != i + 1) {
-            fprintf(stderr, "Formato de archivo incorrecto en la línea %d.\n", i + 1);
-            freeGraph(g);
-            fclose(archivo);
-            return NULL;
-        }
-
-        int valor;
-        while (fscanf(archivo, "%d,", &valor) == 1) {
-            // Validar que el valor sea un nodo válido y distinto al nodo actual
-            if (valor > orden || valor == nodo) {
-                fprintf(stderr, "Error de formato o valor inválido en el archivo.\n");
-                freeGraph(g);
-                fclose(archivo);
-                return NULL;
-            }
-            addEdge(g, i, valor - 1);  // Valor - 1 para índice base 0
-        }
-    }
-
-    fclose(archivo);
-    return g;
+	printf("Grafo ingresado es válido.\n");
 }

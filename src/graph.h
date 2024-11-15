@@ -15,6 +15,7 @@ void removeVertex(Graph* g, int vert);
 int minDegree(Graph *g);
 int maxDegree(Graph *g);
 Graph* copyGraph(Graph* g);
-Graph* cargarGrafoDesdeArchivo(const char* rutaArchivo);
+void verificarAdjMatrix(Graph *g);
+
 
 #endif
