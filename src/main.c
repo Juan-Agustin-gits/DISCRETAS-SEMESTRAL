@@ -102,17 +102,26 @@ int main() {
 
 			    if (rutaArchivo != NULL) {
 			    	if (verificarArchivo(rutaArchivo)) {
-			        printf("Archivo seleccionado: %s\n", rutaArchivo);
-			        printf("SI FUNCIONAAAAA");
-			        imprimirArchivo(rutaArchivo);
+			        //printf("Archivo seleccionado: %s\n", rutaArchivo);
+			        //imprimirArchivo(rutaArchivo);
 
+			        int orden;
+    				Node *nodes = NULL;
 
-					
-					Graph* g = cargarGrafoDesdeArchivo(rutaArchivo);
-					printf("Grado mínimo: %d\n", minDegree(g));
-					printf("Grado máximo: %d\n", maxDegree(g));
+			        parse_file(rutaArchivo, &orden, &nodes);
+			        Graph* g = createGraph(orden);
 
+			        printf("Orden: %d\n", orden);
+				    for (int i = 0; i < orden; i++) {
+				        //printf("Valor %d: ", nodes[i].node);
+				        for (int j = 0; j < nodes[i].neighbor_count; j++) {
 
+				            //INTERACTUAR CON LOS VALORES
+
+				            addEdge(g, i, nodes[i].neighbors[j] -1 );
+				        }
+				        //printf("\n");
+				    }
 					int* seleccionadas = seleccionar_opciones();
 
 					if (seleccionadas[0] != 0){
@@ -148,27 +157,18 @@ int main() {
 					}
 					// Liberar la memoria del grafo
 					freeGraph(g);
+					break;				    
+			        
+			    	}
+				}else{
+					printf("No se pudo leer el archivo, cerrando programa");
 					break;
-
-
-				    //free(rutaArchivo);  // Liberar la memoria
-
-
-
-
-			        }
-
-
-			        free((void*)rutaArchivo);  // Liberar memoria
-			        break;
-			    }
-
-		}
+				}
 	    default:
 	        fprintf(stderr, "Opción no válida.\n");
 	        exit(1);
+		}
 	}
-
 
 
 	return 0;

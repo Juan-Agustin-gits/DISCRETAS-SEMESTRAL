@@ -4,10 +4,15 @@
 #include <string.h>
 #include <limits.h>
 
+
 #define MAX_VALORES 100
-
-
-
+#define MAX_LINE_LENGTH 256
+#define MAX_NEIGHBORS 10
+typedef struct Node {
+    int node;
+    int neighbors[MAX_NEIGHBORS];
+    int neighbor_count;
+} Node;
 
 int verificarArchivo(const char *nombreArchivo) {
     FILE *archivo = fopen(nombreArchivo, "r");
@@ -258,5 +263,60 @@ int* seleccionar_opciones() {
 
     return seleccionadas;  // Devolvemos el arreglo de opciones seleccionadas
 }
+
+
+
+
+void parse_file(const char *filename, int *order, Node **nodes) {
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Error al abrir el archivo");
+        exit(EXIT_FAILURE);
+    }
+
+    char line[MAX_LINE_LENGTH];
+
+    // Leer el orden
+    if (fgets(line, sizeof(line), file)) {
+        *order = atoi(line);
+    }
+
+    // Reservar memoria para los nodos
+    *nodes = malloc((*order) * sizeof(Node));
+    if (!*nodes) {
+        perror("Error al asignar memoria");
+        exit(EXIT_FAILURE);
+    }
+
+    // Leer nodos y vecinos
+    int node_index = 0;
+    while (fgets(line, sizeof(line), file)) {
+
+        // Inicializar el nodo
+        (*nodes)[node_index].neighbor_count = 0;
+
+        // Extraer el número del nodo
+        char *token = strtok(line, " :");
+        if (token) {
+            (*nodes)[node_index].node = atoi(token);
+        }
+
+        // Extraer los vecinos
+        token = strtok(NULL, ",");
+        while (token) {
+            // Elimina espacios iniciales
+            while (*token == ' ' || *token == ':') token++;
+            int neighbor = atoi(token);
+            if (neighbor > 0) { // Evitar vecinos inválidos
+                (*nodes)[node_index].neighbors[(*nodes)[node_index].neighbor_count++] = neighbor;
+            }
+            token = strtok(NULL, ",");
+        }
+        node_index++;
+    }
+
+    fclose(file);
+}
+
 
 
