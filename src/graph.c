@@ -94,7 +94,7 @@ int minDegree(Graph *g) {
 }
 
 int maxDegree(Graph *g) {
-	// recibimos grafo, recorremos su matriz y vemos cual fila es la que menos 1's tiene
+	// recibimos grafo, recorremos su matriz y vemos cual fila es la que mas 1's tiene
 	int **matrix = g->adjMatrix;
 	int orden = g->n;
 	int count = 0;
