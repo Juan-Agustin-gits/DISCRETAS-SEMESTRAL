@@ -20,7 +20,7 @@ int bfs(struct Graph* graph, int StartVert){
     while (!esVacia(q))
     {
         int ActVert = desColar(q);
-        printf(" vertice actual: %d ", ActVert);
+        //printf(" vertice actual: %d ", ActVert);
 
 
         // analizar vecindad

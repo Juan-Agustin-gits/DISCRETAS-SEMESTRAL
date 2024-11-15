@@ -12,6 +12,9 @@ void delEdge(Graph *g, int src, int dest);
 void printGraph(Graph *g);
 void freeGraph(Graph *g);
 void removeVertex(Graph* g, int vert);
+int minDegree(Graph *g);
+int maxDegree(Graph *g);
 Graph* copyGraph(Graph* g);
+Graph* cargarGrafoDesdeArchivo(const char* rutaArchivo);
 
 #endif
