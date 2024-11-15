@@ -57,7 +57,6 @@ int main(int argc, char const *argv[]){
 	}
 
 	if (conec == g->n) {
-		printf("\n");
         printf("El Grafo es %d-Conexo\n", conec);
     }
     clock_t end = clock();

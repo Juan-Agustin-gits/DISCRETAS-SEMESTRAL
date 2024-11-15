@@ -2,7 +2,7 @@
 
 PROGRAMA="./exp"
 
-ARCHIVO_GRAFO="experiments/g5k2"
+ARCHIVO_GRAFO="experiments/k20"
 
 ITERACIONES=20
 
