@@ -2,11 +2,11 @@
 
 PROGRAMA="./exp"
 
-ARCHIVO_GRAFO="experiments/k20"
+ARCHIVO_GRAFO="experiments/k10"
 
 ITERACIONES=20
 
-ARCHIVO_RESULTADO="experiments/g5k2_times.csv"
+ARCHIVO_RESULTADO="experiments/k10.csv"
 
 # Verificar si el archivo de grafo existe
 if [ ! -f "$ARCHIVO_GRAFO" ]; then
