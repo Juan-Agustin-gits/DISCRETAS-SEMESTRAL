@@ -9,5 +9,7 @@
 extern struct cola cola;
 
 int bfs(struct Graph* graph, int StartVert);
+bool esConexo(Graph *g, int excluidos[], int tamanoExcluidos);
+int calcularConectividad(Graph *g);
 
 #endif // BFS_H
