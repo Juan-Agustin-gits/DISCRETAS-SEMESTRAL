@@ -42,7 +42,7 @@ int verificarArchivo(const char *nombreArchivo) {
         if (a_i <= ultimo_a || a_i > n) {
             fprintf(stderr, "Error: el valor %d no cumple el orden ascendente o está fuera de rango\n", a_i);
             fclose(archivo);
-            exit(1);
+            return 0;
         }
         ultimo_a = a_i;
 
@@ -62,7 +62,7 @@ int verificarArchivo(const char *nombreArchivo) {
             if (b < 1 || b > n) {
                 fprintf(stderr, "Error: el valor %d en la lista de %d está fuera de rango\n", b, i + 1);  // Cambio aquí
                 fclose(archivo);
-                exit(1);
+                return 0;
             }
 
             // Verificar que `b` no esté repetido en la misma línea
@@ -70,7 +70,7 @@ int verificarArchivo(const char *nombreArchivo) {
                 if (valoresLinea[j] == b) {
                     fprintf(stderr, "Error: el valor %d está repetido en el vertice %d\n", b, i + 1);  // Cambio aquí
                     fclose(archivo);
-                    exit(1);
+                    return 0;
                 }
             }
 
@@ -83,7 +83,7 @@ int verificarArchivo(const char *nombreArchivo) {
             if (c != ',') {
                 fprintf(stderr, "Error de formato: se esperaba una coma o fin de línea\n");
                 fclose(archivo);
-                exit(1);
+                return 0;
             }
         }
     }
@@ -93,11 +93,11 @@ int verificarArchivo(const char *nombreArchivo) {
     if (fscanf(archivo, "%c", &extra) != EOF) {
         fprintf(stderr, "Error: el archivo contiene más de %d líneas\n", n);
         fclose(archivo);
-        exit(1);
+        return 0;
     }
 
     fclose(archivo);
-    return 0;
+    return 1;
 }
 
 char *strdup(const char *s) {
@@ -317,6 +317,5 @@ void parse_file(const char *filename, int *order, Node **nodes) {
 
     fclose(file);
 }
-
 
 

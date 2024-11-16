@@ -47,7 +47,7 @@ int main(int argc, char const *argv[]){
 	for(int k = 0;k < g->n; k++){
 		Graph* g2 = copyGraph(g);
 		removeVertex(g2,k);
-		if(!bfs(g2,0)){
+		if(!bfs(g2,k)){
 			conec = k+1;
 			printf("El Grafo ingresado tiene conectividad %d\n", conec);
 			printf("Maximo k = %d tal que g es %d-conexo.\n", conec, conec);
